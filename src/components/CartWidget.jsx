@@ -1,4 +1,10 @@
-export const CartWidget = () => {
+import carrito from "../assets/carrito-de-compras.png";
 
-    return (s)
-}
+export const CartWidget = () => {
+  return (
+    <>
+      <img src={carrito} height={26} />
+      <span>5</span>
+    </>
+  );
+};
