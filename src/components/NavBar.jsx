@@ -1,22 +1,50 @@
-import { CartWidget } from "./CartWidget";
-import Container from "react-bootstrap/Container";
-import Nav from "react-bootstrap/Nav";
-import Navbar from "react-bootstrap/Navbar";
+import React from "react";
+import { Navbar, Nav, Container, Badge } from "react-bootstrap";
+import { Link } from "react-router-dom";
+import { useCart } from "../CartContext";
 
-export const NavBar = () => {
+function NavbarComponent() {
+  const { cart } = useCart();
+
   return (
-    <>
-      <Navbar bg="dark" data-bs-theme="dark">
-        <Container>
-          <Navbar.Brand href="#home">Numeral Agro</Navbar.Brand>
+    <Navbar bg="dark" data-bs-theme="dark">
+      <Container>
+        <Navbar.Brand as={Link} to="/">
+        <img
+              src="src\assets\logoAmarillo.png"
+              width="80"
+              height="80"
+              className="d-inline-block align-top"
+              alt="numeral"
+            />
+        </Navbar.Brand>
+        <Navbar.Toggle aria-controls="basic-navbar-nav" />
+        <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto">
-            <Nav.Link href="#home">Inicio</Nav.Link>
-            <Nav.Link href="#features">Contacto</Nav.Link>
-            <Nav.Link href="#product">Producto</Nav.Link>
+            <Nav.Link as={Link} to="/category/cereales">
+              Cereales
+            </Nav.Link>
+            <Nav.Link as={Link} to="/category/oleoginosas">
+              Oleoginosas
+            </Nav.Link>
+            <Nav.Link as={Link} to="/category/granos">
+              Granos
+            </Nav.Link>
           </Nav>
-          <CartWidget />
-        </Container>
-      </Navbar>
-    </>
+          <Nav>
+            <Nav.Link as={Link} to="/cart">
+              Carrito
+              {cart.length > 0 && (
+                <Badge bg="secondary" className="ms-2">
+                  {cart.length}
+                </Badge>
+              )}
+            </Nav.Link>
+          </Nav>
+        </Navbar.Collapse>
+      </Container>
+    </Navbar>
   );
-};
+}
+
+export default NavbarComponent;
