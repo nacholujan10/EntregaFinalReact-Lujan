@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import { Card, Button, Container, Row, Col } from "react-bootstrap";
-import { useCart } from "../CartContext";
+import { useCart } from "../context/CartContext";
 
 import maizImage from "../assets/maiz.png";
 import sojaImage from "../assets/soja.png";

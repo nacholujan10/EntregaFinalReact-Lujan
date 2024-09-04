@@ -1,8 +1,11 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import { CartContext } from "../context/CartContext"
+import { FaShoppingCart } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
-import { FaShoppingCart } from 'react-icons/fa'; // Usa cualquier ícono que prefieras
 
-function CartWidget({ cartItemsCount }) {
+function CartWidget() {
+  const { cartItemsCount } = useContext(CartContext);
+
   return (
     <Link to="/cart" className="text-decoration-none">
       <FaShoppingCart size={24} />
@@ -12,3 +15,4 @@ function CartWidget({ cartItemsCount }) {
 }
 
 export default CartWidget;
+
