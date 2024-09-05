@@ -1,50 +1,57 @@
-import React, { useContext } from 'react';
-import { CartContext } from '../context/CartContext';
-import { Button, ListGroup } from 'react-bootstrap';
+import React from 'react';
+import { useCartContext } from '../context/CartContext';
+import { Button, Table } from 'react-bootstrap';
 
-function Cart() {
-  const { cart, removeFromCart, clearCart, updateQuantity } = useContext(CartContext);
-
-  const handleQuantityChange = (itemId, newQuantity) => {
-    if (newQuantity === 0) {
-      removeFromCart(itemId);
-    } else {
-      updateQuantity(itemId, newQuantity);
-    }
-  };
+const Cart = () => {
+  const { cartItems, calculateTotal, removeItem, clearCart } = useCartContext();
 
   return (
     <div>
-      <h2>Carrito de Compras</h2>
-      {cart.length === 0 ? (
-        <p>Tu carrito está vacío.</p>
+      <h1>Carrito de Compras</h1>
+      {cartItems.length === 0 ? (
+        <p>El carrito está vacío</p>
       ) : (
         <>
-          <ListGroup>
-            {cart.map((item) => (
-              <ListGroup.Item key={item.id}>
-                <div className="d-flex justify-content-between align-items-center">
-                  <div>
-                    <strong>{item.name}</strong>
-                    <p>${item.price}</p>
-                  </div>
-                  <div>
-                    <Button onClick={() => handleQuantityChange(item.id, item.quantity - 1)}>-</Button>
-                    <span className="mx-2">{item.quantity}</span>
-                    <Button onClick={() => handleQuantityChange(item.id, item.quantity + 1)}>+</Button>
-                    <Button variant="danger" onClick={() => removeFromCart(item.id)} className="ms-2">Eliminar</Button>
-                  </div>
-                </div>
-              </ListGroup.Item>
-            ))}
-          </ListGroup>
-          <Button variant="warning" onClick={clearCart} className="mt-4">
+          <Table striped bordered hover>
+            <thead>
+              <tr>
+                <th>Producto</th>
+                <th>Cantidad</th>
+                <th>Precio Unitario</th>
+                <th>Subtotal</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              {cartItems.map((item) => (
+                <tr key={item.id}>
+                  <td>{item.name}</td>
+                  <td>{item.quantity}</td>
+                  <td>${item.price}</td>
+                  <td>${item.price * item.quantity}</td>
+                  <td>
+                    <Button
+                      variant="danger"
+                      onClick={() => removeItem(item.id)}
+                    >
+                      Eliminar
+                    </Button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </Table>
+          <h3>Total: ${calculateTotal()}</h3>
+          <Button variant="danger" onClick={clearCart}>
             Vaciar Carrito
+          </Button>
+          <Button variant="success" className="ms-2">
+            Finalizar Compra
           </Button>
         </>
       )}
     </div>
   );
-}
+};
 
 export default Cart;
