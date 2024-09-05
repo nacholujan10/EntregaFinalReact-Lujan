@@ -1,6 +1,8 @@
-import React, { createContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState, useEffect } from 'react';
 
 export const CartContext = createContext();
+
+export const useCart = () => useContext(CartContext);
 
 export const CartProvider = ({ children }) => {
   const [cart, setCart] = useState(() => {
@@ -50,6 +52,3 @@ export const CartProvider = ({ children }) => {
     </CartContext.Provider>
   );
 };
-
-
-// Estoy usando un carrito de manera global para poder interactuar con todos los componentes.
