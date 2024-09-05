@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useCartContext } from '../context/CartContext';
-import { Button, Table, Form, FormControl } from 'react-bootstrap';  // Asegúrate de que Form esté importado
+import { Button, Table, Form, FormControl } from 'react-bootstrap';
 import { db } from '../main';
 import { collection, addDoc } from 'firebase/firestore';
 import { Link } from 'react-router-dom';
@@ -8,7 +8,6 @@ import { Link } from 'react-router-dom';
 const Cart = () => {
   const { cartItems, calculateTotal, clearCart, updateItemQuantity, removeItem } = useCartContext();
 
-  // Estado para manejar los datos del comprador
   const [buyerData, setBuyerData] = useState({
     name: '',
     email: '',
@@ -16,11 +15,9 @@ const Cart = () => {
     phone: ''
   });
 
-  // Estado para evitar múltiples ejecuciones y controlar el flujo
-  const [isProcessing, setIsProcessing] = useState(false);
-  const [isOrderCompleted, setIsOrderCompleted] = useState(false);  // Estado para el flujo final
 
-  // Estado para mensajes
+  const [isProcessing, setIsProcessing] = useState(false);
+  const [isOrderCompleted, setIsOrderCompleted] = useState(false);
   const [message, setMessage] = useState('');
 
   const handleInputChange = (e) => {
@@ -36,22 +33,19 @@ const Cart = () => {
   };
 
   const handleCheckout = async () => {
-    // Validar que los correos coincidan
     if (buyerData.email !== buyerData.confirmEmail) {
       setMessage('Los correos electrónicos no coinciden.');
       return;
     }
 
-    // Validar que los datos del comprador estén completos
     if (!buyerData.name || !buyerData.email || !buyerData.phone) {
       setMessage('Por favor, completa todos los campos del comprador.');
       return;
     }
 
-    // Evitar múltiples órdenes
     if (isProcessing) return;
 
-    setIsProcessing(true);  // Bloquear el botón para evitar múltiples clics
+    setIsProcessing(true);
 
     const total = calculateTotal();
 
@@ -71,20 +65,20 @@ const Cart = () => {
       console.log('Orden creada con ID: ', docRef.id);
       setMessage('¡Gracias por tu compra! Tu ID de orden es: ' + docRef.id);
       clearCart();
-      setIsOrderCompleted(true);  // Cambiar el estado cuando la orden se complete
+      setIsOrderCompleted(true);
     } catch (error) {
       console.error('Error al crear la orden: ', error);
       setMessage('Hubo un error al crear la orden.');
     }
 
-    setIsProcessing(false);  // Permitir clics de nuevo si es necesario
+    setIsProcessing(false);
   };
 
   return (
     <div>
       <h1>Carrito de Compras</h1>
 
-      {/* Si la orden se completó, mostrar el mensaje de éxito y el botón */}
+      {}
       {isOrderCompleted ? (
         <div>
           <p>{message}</p>
@@ -131,7 +125,7 @@ const Cart = () => {
               </Table>
               <h3>Total: ${calculateTotal()}</h3>
 
-              {/* Formulario para capturar los datos del comprador */}
+              {}
               <Form>
                 <Form.Group className="mb-3" controlId="buyerName">
                   <Form.Label>Nombre Completo</Form.Label>
@@ -178,12 +172,12 @@ const Cart = () => {
                 </Form.Group>
               </Form>
 
-              {/* Botón de finalizar compra */}
+              {}
               <Button variant="success" onClick={handleCheckout} disabled={isProcessing}>
                 {isProcessing ? 'Procesando...' : 'Finalizar Compra'}
               </Button>
 
-              {/* Mensajes de error o confirmación */}
+              {}
               {message && <p>{message}</p>}
             </>
           )}
