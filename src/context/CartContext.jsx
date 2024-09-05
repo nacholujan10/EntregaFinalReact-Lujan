@@ -14,8 +14,9 @@ export const CartProvider = ({ children }) => {
     localStorage.setItem('cart', JSON.stringify(cartItems));
   }, [cartItems]);
 
+  // Agregar ítem al carrito
   const addItemToCart = (item, quantity = 1) => {
-    setCartItems((prevCart) => {
+    setCartItems(prevCart => {
       const itemInCart = prevCart.find(cartItem => cartItem.id === item.id);
       if (itemInCart) {
         return prevCart.map(cartItem =>
@@ -28,30 +29,35 @@ export const CartProvider = ({ children }) => {
     });
   };
 
-  const removeItem = (itemId) => {
-    setCartItems((prevCart) => prevCart.filter(cartItem => cartItem.id !== itemId));
-  };
-
-  const clearCart = () => {
-    setCartItems([]);
-  };
-
-  const updateQuantity = (itemId, quantity) => {
-    setCartItems((prevCart) =>
+  // Actualizar la cantidad de un ítem en el carrito
+  const updateItemQuantity = (id, quantity) => {
+    setCartItems(prevCart =>
       prevCart.map(cartItem =>
-        cartItem.id === itemId ? { ...cartItem, quantity } : cartItem
+        cartItem.id === id ? { ...cartItem, quantity: Math.max(1, Number(quantity)) } : cartItem
       )
     );
   };
 
+  // Calcular la cantidad total de ítems en el carrito
+  const cartQuantity = cartItems.reduce((total, item) => total + item.quantity, 0);
+
+  // Calcular el total del carrito (precio total)
   const calculateTotal = () => {
     return cartItems.reduce((total, item) => total + item.price * item.quantity, 0);
   };
 
-  const cartQuantity = cartItems.reduce((total, item) => total + item.quantity, 0);
+  // Eliminar un ítem del carrito
+  const removeItem = (id) => {
+    setCartItems(prevCart => prevCart.filter(cartItem => cartItem.id !== id));
+  };
+
+  // Vaciar el carrito
+  const clearCart = () => {
+    setCartItems([]);
+  };
 
   return (
-    <CartContext.Provider value={{ cartItems, addItemToCart, removeItem, clearCart, updateQuantity, calculateTotal, cartQuantity }}>
+    <CartContext.Provider value={{ cartItems, addItemToCart, updateItemQuantity, cartQuantity, calculateTotal, removeItem, clearCart }}>
       {children}
     </CartContext.Provider>
   );

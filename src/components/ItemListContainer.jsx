@@ -20,7 +20,10 @@ const ItemListContainer = () => {
       }
 
       const querySnapshot = await getDocs(q);
-      setItems(querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })));
+      setItems(querySnapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data()
+      })));
       setLoading(false);
     };
 
